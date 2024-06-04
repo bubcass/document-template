@@ -96,7 +96,7 @@ function topicChart(data, {width}) {
   marginLeft: 200,
   x: {label: "Number of questions asked"},
   y: {label: "question topics"},
-  title: "Top 30 question topics this month",
+  title: "Top 30 question topics this year",
   marks: [
     Plot.barX(arrayOfNumbersByHeading, {x: "numbers", y: "heading", fill: "numbers", tip: true, sort: {y: "x", reverse: true}}),
     Plot.ruleX([0])
