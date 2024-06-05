@@ -131,12 +131,34 @@ const questionTopics = filteredQuestions.map((d) => ({Date: new Date(d.Date).toL
 
 ```
 
+
 ```js
   display(Inputs.table(topicSearch))
   const topicNumbers = Array.from(Array.from(d3.rollup(questionTopics, v => v.length, d => d.Heading)).slice().sort((a, b) => d3.descending(a[1], b[1])).slice(0,30),
   ([heading, numbers]) => ({heading, numbers}));
 ```
+Some topics are asked about multiple times and this can indicate a popular issue for discussion in a constituency.
 
+Take a look at the top 30 question topics in this constituency this year.
+```js
+function questionsChart(data, {width} = {}) {
+  return Plot.plot({
+  subtitle: "Most popular question topics in this constituency",
+width: 1000,
+  marginLeft: 200,
+  marginBottom: 50,
+  x: {label: "Number of questions"},
+  y: {label: "Topics"},
+  marks: [
+    Plot.barX(topicNumbers, {x: "numbers", y: "heading", fill: "heading", sort: {y: "x", reverse: true}, tip: true}),
+    Plot.ruleY([0])
+  ]
+});
+}
+```
+```js
+    questionsChart(topicNumbers)
+```
 
 ```js
 const profiles = constWithProfile.filter(d => d.constituency == `${constituencyPicker}`)
@@ -184,7 +206,7 @@ width: 1000,
 ```js
   const index = d3.index(membersData, d => d.memberCode);
   const questionsWithConstituency = questions.map(({memberCode, ...values}) => ({memberCode, constituency: index.get(memberCode)?.constituency, ...values}));
-  const filteredQuestions = questionsWithConstituency.filter(d => d.constituency == `${constituencyPicker}`).slice().sort((a, b) => d3.descending(a.Date, b.ate));
+  const filteredQuestions = questionsWithConstituency.filter(d => d.constituency == `${constituencyPicker}`).slice().sort((a, b) => d3.descending(a.Date, b.Date));
   const filteredByConstituency = Array.from(d3.rollup(questionsWithConstituency.filter(d => d.constituency == `${constituencyPicker}`), v => v.length, d => d.Heading));
 
 
